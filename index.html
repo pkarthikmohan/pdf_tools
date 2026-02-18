@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Tools - All-in-One PDF Solution</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header class="navbar">
+            <div class="nav-content">
+                <div class="logo">
+                    <span class="logo-icon">❤️</span>
+                    <span class="logo-text">PDF Tools</span>
+                </div>
+                <nav class="nav-links">
+                    <button class="nav-link active" onclick="showView('home')">Home</button>
+                    <button class="nav-link" onclick="showTool('merge')">Merge PDF</button>
+                    <button class="nav-link" onclick="showTool('word-to-pdf')">Word to PDF</button>
+                    <button class="nav-link" onclick="showTool('compress')">Compress PDF</button>
+                    <button class="nav-link" onclick="showTool('image')">Image to PDF</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-container">
+            <!-- Home View - Tool Grid -->
+            <div id="home-view" class="view-container active">
+                <div class="hero-section">
+                    <h1>Every PDF tool you need in one place</h1>
+                    <p>All the tools you need to work with PDFs. Free, easy to use, and works offline!</p>
+                </div>
+
+                <!-- Tool Categories -->
+                <div class="tools-wrapper">
+                    <!-- ORGANIZE PDF -->
+                    <section class="tool-category">
+                        <h2 class="category-title">📋 Organize PDF</h2>
+                        <div class="tool-cards">
+                            <div class="tool-card" onclick="showTool('merge')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">🔗</div>
+                                <h3>Merge PDF</h3>
+                                <p>Combine PDFs in the order you want</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('split')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">✂️</div>
+                                <h3>Split PDF</h3>
+                                <p>Separate pages into multiple files</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('delete')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">🗑️</div>
+                                <h3>Remove Pages</h3>
+                                <p>Delete unwanted pages from PDF</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('extract')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">📤</div>
+                                <h3>Extract Pages</h3>
+                                <p>Save specific pages as new PDF</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- OPTIMIZE PDF -->
+                    <section class="tool-category">
+                        <h2 class="category-title">⚡ Optimize PDF</h2>
+                        <div class="tool-cards">
+                            <div class="tool-card" onclick="showTool('compress')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #5AD67D 0%, #40C463 100%);">🗜️</div>
+                                <h3>Compress PDF</h3>
+                                <p>Reduce file size while optimizing quality</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CONVERT TO PDF -->
+                    <section class="tool-category">
+                        <h2 class="category-title">🔄 Convert to PDF</h2>
+                        <div class="tool-cards">
+                            <div class="tool-card" onclick="showTool('image')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">🖼️</div>
+                                <h3>Image to PDF</h3>
+                                <p>Convert JPG, PNG images to PDF</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('word-to-pdf')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">📝</div>
+                                <h3>Word to PDF</h3>
+                                <p>Convert DOCX documents to PDF</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('excel-to-pdf')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">📊</div>
+                                <h3>Excel to PDF</h3>
+                                <p>Convert XLSX spreadsheets to PDF</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('ppt-to-pdf')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">📽️</div>
+                                <h3>PowerPoint to PDF</h3>
+                                <p>Convert PPTX presentations to PDF</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CONVERT FROM PDF -->
+                    <section class="tool-category">
+                        <h2 class="category-title">📤 Convert from PDF</h2>
+                        <div class="tool-cards">
+                            <div class="tool-card" onclick="showTool('pdf-to-word')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">📝</div>
+                                <h3>PDF to Word</h3>
+                                <p>Convert PDF to editable DOCX</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('pdf-to-excel')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">📊</div>
+                                <h3>PDF to Excel</h3>
+                                <p>Extract tables to XLSX format</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('pdf-to-ppt')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">📽️</div>
+                                <h3>PDF to PowerPoint</h3>
+                                <p>Convert PDF to PPTX slides</p>
+                            </div>
+                            <div class="tool-card" onclick="showTool('pdf-to-image')">
+                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">🖼️</div>
+                                <h3>PDF to Image</h3>
+                                <p>Convert PDF pages to JPG/PNG</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Tool View Container -->
+            <div id="tool-view" class="view-container">
+                <button class="back-btn" onclick="showView('home')">← Back to all tools</button>
+                
+                <div class="tool-content">
+                    <div id="tool-header">
+                        <h1 id="tool-title"></h1>
+                        <p id="tool-description"></p>
+                    </div>
+
+                    <!-- Dynamic tool content will be inserted here -->
+                    <div id="tool-workspace"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>🔒 All processing happens in your browser. No files are uploaded to any server.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="app.js?v=2.0"></script>
+</body>
+</html>

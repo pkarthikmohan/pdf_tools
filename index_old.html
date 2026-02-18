@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Tools - All-in-One PDF Solution</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header class="navbar">
+            <div class="nav-content">
+                <div class="logo">
+                    <span class="logo-icon">📄</span>
+                    <span class="logo-text">PDF Tools</span>
+                </div>
+                <nav class="nav-links">
+                    <a href="#" class="nav-link active" data-view="home">Home</a>
+                    <a href="#" class="nav-link" data-tool="merge">Merge PDF</a>
+                    <a href="#" class="nav-link" data-tool="compress">Compress PDF</a>
+                    <a href="#" class="nav-link" data-tool="extract">Extract Pages</a>
+                    <a href="#" class="nav-link all-tools-btn">All PDF Tools ▼</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-container">
+            <!-- Home View - Tool Grid -->
+            <div id="home-view" class="view-container active">
+                <div class="hero-section">
+                    <h1>Every PDF tool you need in one place</h1>
+                    <p>All the tools you need to work with PDFs in one place. Free, easy to use!</p>
+                </div>
+
+                <!-- Tool Categories -->
+                <div class="tools-grid">
+                    <!-- ORGANIZE PDF -->
+                    <section class="tool-category">
+                        <h2 class="category-title">📋 Organize PDF</h2>
+                        <div class="tool-cards">
+                            <div class="tool-card" data-tool="merge">
+                                <div class="tool-icon merge-icon">🔗</div>
+                                <h3>Merge PDF</h3>
+                                <p>Combine PDFs in the order you want</p>
+                            </div>
+                            <div class="tool-card" data-tool="split">
+                                <div class="tool-icon split-icon">✂️</div>
+                                <h3>Split PDF</h3>
+                                <p>Separate pages into multiple files</p>
+                            </div>
+                            <div class="tool-card" data-tool="delete">
+                                <div class="tool-icon delete-icon">🗑️</div>
+                                <h3>Remove Pages</h3>
+                                <p>Delete unwanted pages from PDF</p>
+                            </div>
+                            <div class="tool-card" data-tool="extract">
+                                <div class="tool-icon extract-icon">📤</div>
+                                <h3>Extract Pages</h3>
+                                <p>Save specific pages as new PDF</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- OPTIMIZE PDF -->
+                    <section class="tool-category">
+                        <h2 class="category-title">⚡ Optimize PDF</h2>
+                        <div class="tool-cards">
+                            <div class="tool-card" data-tool="compress">
+                                <div class="tool-icon compress-icon">🗜️</div>
+                                <h3>Compress PDF</h3>
+                                <p>Reduce file size while optimizing quality</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- CONVERT TO PDF -->
+                    <section class="tool-category">
+                        <h2 class="category-title">🔄 Convert to PDF</h2>
+                        <div class="tool-cards">
+                            <div class="tool-card" data-tool="image">
+                                <div class="tool-icon image-icon">🖼️</div>
+                                <h3>Image to PDF</h3>
+                                <p>Convert JPG, PNG images to PDF</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Tool Views -->
+        <div class="upload-section">
+            <label for="pdf-input" class="file-label">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Click to select PDF files</span>
+                <span class="file-hint">or drag and drop here</span>
+            </label>
+            <input type="file" id="pdf-input" accept=".pdf" multiple>
+        </div>
+
+        <div id="file-list" class="file-list hidden">
+            <h3>Selected Files (<span id="file-count">0</span>)</h3>
+            <ul id="files"></ul>
+            <button id="clear-btn" class="btn btn-secondary">Clear All</button>
+        </div>
+
+        <div class="options-section">
+            <label class="checkbox-container">
+                <input type="checkbox" id="compress-checkbox" checked>
+                <span class="checkmark"></span>
+                <span class="checkbox-label">Compress merged PDF (reduces file size)</span>
+            </label>
+        </div>
+
+        <div class="action-section">
+            <button id="merge-btn" class="btn btn-primary" disabled>
+                Merge PDFs
+            </button>
+        </div>
+
+        <div id="progress" class="progress hidden">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <p id="progress-text">Processing...</p>
+        </div>
+
+        </div>
+        <!-- END MERGE TAB -->
+
+        <!-- COMPRESS TAB -->
+        <div id="compress-tab" class="tab-content">
+            <div class="upload-section">
+                <label for="compress-input" class="file-label">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <span>Click to select a PDF file</span>
+                    <span class="file-hint">or drag and drop here</span>
+                </label>
+                <input type="file" id="compress-input" accept=".pdf">
+            </div>
+
+            <div id="compress-file-info" class="file-info hidden">
+                <p><strong>Selected:</strong> <span id="compress-filename"></span></p>
+                <p><strong>Original Size:</strong> <span id="original-size"></span> KB</p>
+            </div>
+
+            <div class="compression-options">
+                <label for="target-size" class="option-label">
+                    <span>Target file size (KB):</span>
+                    <input type="number" id="target-size" placeholder="e.g., 500" min="10">
+                </label>
+                <p class="hint-text">Leave empty for maximum compression, or enter desired size in KB</p>
+            </div>
+
+            <div class="action-section">
+                <button id="compress-file-btn" class="btn btn-primary" disabled>
+                    Compress PDF
+                </button>
+            </div>
+
+            <div id="compress-progress" class="progress hidden">
+                <div class="progress-bar">
+                    <div id="compress-progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="compress-progress-text">Processing...</p>
+            </div>
+        </div>
+        <!-- END COMPRESS TAB -->
+
+        <!-- EXTRACT PAGES TAB -->
+        <div id="extract-tab" class="tab-content">
+            <div class="upload-section">
+                <label for="extract-input" class="file-label">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <span>Click to select a PDF file</span>
+                    <span class="file-hint">or drag and drop here</span>
+                </label>
+                <input type="file" id="extract-input" accept=".pdf">
+            </div>
+
+            <div id="extract-file-info" class="file-info hidden">
+                <p><strong>Selected:</strong> <span id="extract-filename"></span></p>
+                <p><strong>Total Pages:</strong> <span id="extract-total-pages">0</span></p>
+            </div>
+
+            <div id="extract-page-selector" class="page-selector hidden">
+                <h3>Select pages to extract:</h3>
+                <div class="input-methods">
+                    <label>
+                        <input type="radio" name="extract-method" value="range" checked>
+                        <span>Page Range (e.g., 1-5, 8, 10-12)</span>
+                    </label>
+                    <input type="text" id="extract-range-input" placeholder="1-3, 5, 7-9" class="range-input">
+                </div>
+                <div id="extract-page-grid" class="page-grid"></div>
+            </div>
+
+            <div class="action-section">
+                <button id="extract-btn" class="btn btn-primary" disabled>
+                    Extract Selected Pages
+                </button>
+            </div>
+
+            <div id="extract-progress" class="progress hidden">
+                <div class="progress-bar">
+                    <div id="extract-progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="extract-progress-text">Processing...</p>
+            </div>
+        </div>
+        <!-- END EXTRACT PAGES TAB -->
+
+        <!-- DELETE PAGES TAB -->
+        <div id="delete-tab" class="tab-content">
+            <div class="upload-section">
+                <label for="delete-input" class="file-label">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <span>Click to select a PDF file</span>
+                    <span class="file-hint">or drag and drop here</span>
+                </label>
+                <input type="file" id="delete-input" accept=".pdf">
+            </div>
+
+            <div id="delete-file-info" class="file-info hidden">
+                <p><strong>Selected:</strong> <span id="delete-filename"></span></p>
+                <p><strong>Total Pages:</strong> <span id="delete-total-pages">0</span></p>
+            </div>
+
+            <div id="delete-page-selector" class="page-selector hidden">
+                <h3>Select pages to delete:</h3>
+                <div class="input-methods">
+                    <label>
+                        <input type="radio" name="delete-method" value="range" checked>
+                        <span>Page Range (e.g., 2, 4-6, 9)</span>
+                    </label>
+                    <input type="text" id="delete-range-input" placeholder="2, 4-6" class="range-input">
+                </div>
+                <div id="delete-page-grid" class="page-grid"></div>
+            </div>
+
+            <div class="action-section">
+                <button id="delete-btn" class="btn btn-primary" disabled>
+                    Delete Selected Pages
+                </button>
+            </div>
+
+            <div id="delete-progress" class="progress hidden">
+                <div class="progress-bar">
+                    <div id="delete-progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="delete-progress-text">Processing...</p>
+            </div>
+        </div>
+        <!-- END DELETE PAGES TAB -->
+
+        <!-- IMAGE TO PDF TAB -->
+        <div id="image-tab" class="tab-content">
+            <div class="upload-section">
+                <label for="image-input" class="file-label">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>Click to select images</span>
+                    <span class="file-hint">JPG, PNG, WEBP - Multiple files supported</span>
+                </label>
+                <input type="file" id="image-input" accept="image/*" multiple>
+            </div>
+
+            <div id="image-list" class="file-list hidden">
+                <h3>Selected Images (<span id="image-count">0</span>)</h3>
+                <ul id="images"></ul>
+                <button id="clear-images-btn" class="btn btn-secondary">Clear All</button>
+            </div>
+
+            <div class="action-section">
+                <button id="convert-btn" class="btn btn-primary" disabled>
+                    Convert to PDF
+                </button>
+            </div>
+
+            <div id="image-progress" class="progress hidden">
+                <div class="progress-bar">
+                    <div id="image-progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="image-progress-text">Processing...</p>
+            </div>
+        </div>
+        <!-- END IMAGE TO PDF TAB -->
+        </main>
+
+        <footer>
+            <p>All processing happens in your browser. No files are uploaded to any server.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
