@@ -1,0 +1,16 @@
+{
+  "name": "PDF Tools - All-in-One Free PDF Editor",
+  "short_name": "PDF Tools",
+  "description": "Merge, compress, split, extract, and convert PDF documents directly in your browser.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F8F9FA",
+  "theme_color": "#E74C3C",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
