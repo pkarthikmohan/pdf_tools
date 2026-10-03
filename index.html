@@ -10,10 +10,15 @@
     <meta name="author" content="P Karthik Mohan">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="theme-color" content="#E74C3C">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="PDF Tools">
     <link rel="canonical" href="https://pkarthikmohan.github.io/pdf_tools/">
 
-    <!-- Favicon & Web Manifest -->
+    <!-- Favicon, Apple Touch Icon & Web Manifest -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="manifest" href="manifest.json">
 
     <!-- Open Graph / Facebook -->
@@ -22,13 +27,13 @@
     <meta property="og:site_name" content="PDF Tools">
     <meta property="og:title" content="Free PDF Tools Online - Merge, Compress, Split & Convert PDF">
     <meta property="og:description" content="Merge, compress, split, and convert PDF documents directly in your browser. No files uploaded to servers—100% secure, private, and works offline.">
-    <meta property="og:image" content="https://pkarthikmohan.github.io/pdf_tools/favicon.svg">
+    <meta property="og:image" content="https://pkarthikmohan.github.io/pdf_tools/icon-512.png">
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Free Online PDF Tools - Fast, Private & Easy">
     <meta name="twitter:description" content="Merge, compress, split, and convert PDF files in your browser with zero server uploads. Free, safe, and works offline.">
-    <meta name="twitter:image" content="https://pkarthikmohan.github.io/pdf_tools/favicon.svg">
+    <meta name="twitter:image" content="https://pkarthikmohan.github.io/pdf_tools/icon-512.png">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -119,14 +124,17 @@
         <header class="navbar">
             <div class="nav-content">
                 <div class="logo" onclick="showView('home')">
-                    <span class="logo-icon">❤️</span>
+                    <span class="logo-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <path d="M9 13h6"/>
+                            <path d="M9 17h4"/>
+                        </svg>
+                    </span>
                     <span class="logo-text">PDF Tools</span>
                 </div>
-                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" onclick="toggleMobileMenu()">
-                    <span class="hamburger-bar"></span>
-                    <span class="hamburger-bar"></span>
-                    <span class="hamburger-bar"></span>
-                </button>
+                
                 <nav class="nav-links">
                     <button class="nav-link active" onclick="showView('home')">Home</button>
                     <button class="nav-link" onclick="showTool('merge')">Merge PDF</button>
@@ -135,44 +143,91 @@
                     <button class="nav-link" onclick="showTool('word-to-pdf')">Word to PDF</button>
                     <button class="nav-link" onclick="showTool('image')">Image to PDF</button>
                 </nav>
+
+                <div class="nav-actions">
+                    <button class="nav-install-btn" id="install-btn-nav" onclick="triggerPWAInstall()" aria-label="Install PDF Tools App">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span>Install App</span>
+                    </button>
+
+                    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" onclick="toggleMobileMenu()">
+                        <span class="hamburger-bar"></span>
+                        <span class="hamburger-bar"></span>
+                        <span class="hamburger-bar"></span>
+                    </button>
+                </div>
             </div>
+
             <!-- Mobile Menu Drawer -->
             <div class="mobile-menu" id="mobile-menu">
+                <div class="mobile-install-container">
+                    <button class="mobile-install-btn" onclick="triggerPWAInstall()">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span>Install PDF Tools App</span>
+                    </button>
+                </div>
+
                 <div class="mobile-menu-links">
                     <button class="mobile-nav-item active" onclick="mobileNavigateHome()">
-                        <span class="mobile-nav-icon">🏠</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        </span>
                         <span>Home</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('merge')">
-                        <span class="mobile-nav-icon">🔗</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M19 9V3h-6"/><path d="m11 11 8-8"/><path d="M14 15H9v-5"/></svg>
+                        </span>
                         <span>Merge PDF</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('split')">
-                        <span class="mobile-nav-icon">✂️</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+                        </span>
                         <span>Split PDF</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('delete')">
-                        <span class="mobile-nav-icon">🗑️</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                        </span>
                         <span>Remove Pages</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('extract')">
-                        <span class="mobile-nav-icon">📤</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="12 18 16 14 12 10"/><line x1="8" y1="14" x2="16" y2="14"/></svg>
+                        </span>
                         <span>Extract Pages</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('compress')">
-                        <span class="mobile-nav-icon">🗜️</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                        </span>
                         <span>Compress PDF</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('image')">
-                        <span class="mobile-nav-icon">🖼️</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        </span>
                         <span>Image to PDF</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('word-to-pdf')">
-                        <span class="mobile-nav-icon">📝</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        </span>
                         <span>Word to PDF</span>
                     </button>
                     <button class="mobile-nav-item" onclick="mobileNavigateTool('pdf-to-image')">
-                        <span class="mobile-nav-icon">📸</span>
+                        <span class="mobile-nav-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        </span>
                         <span>PDF to Image</span>
                     </button>
                 </div>
@@ -184,7 +239,13 @@
             <!-- Home View - Tool Grid -->
             <div id="home-view" class="view-container active">
                 <div class="hero-section">
-                    <div class="hero-badge">🔒 100% Client-Side • Free • Works Offline</div>
+                    <div class="hero-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        <span>100% Client-Side • Free • Works Offline</span>
+                    </div>
                     <h1>Every PDF tool you need in one place</h1>
                     <p>All the tools you need to work with PDFs. Free, fast, private, and works directly in your browser!</p>
                 </div>
@@ -192,11 +253,11 @@
                 <!-- Category Filters (Horizontal Touch Scroll on Mobile) -->
                 <div class="category-filters-wrapper">
                     <div class="category-filters">
-                        <button type="button" class="filter-chip active" onclick="filterCategory('all', this)">🔥 All Tools</button>
-                        <button type="button" class="filter-chip" onclick="filterCategory('organize', this)">📋 Organize</button>
-                        <button type="button" class="filter-chip" onclick="filterCategory('optimize', this)">⚡ Optimize</button>
-                        <button type="button" class="filter-chip" onclick="filterCategory('to-pdf', this)">🔄 To PDF</button>
-                        <button type="button" class="filter-chip" onclick="filterCategory('from-pdf', this)">📤 From PDF</button>
+                        <button type="button" class="filter-chip active" onclick="filterCategory('all', this)">All Tools</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('organize', this)">Organize</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('optimize', this)">Optimize</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('to-pdf', this)">To PDF</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('from-pdf', this)">From PDF</button>
                     </div>
                 </div>
 
@@ -204,25 +265,54 @@
                 <div class="tools-wrapper">
                     <!-- ORGANIZE PDF -->
                     <section class="tool-category" id="cat-organize" data-category="organize">
-                        <h2 class="category-title">📋 Organize PDF</h2>
+                        <h2 class="category-title">Organize PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('merge')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">🔗</div>
+                                <div class="tool-icon tool-icon-red">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/>
+                                        <path d="M19 9V3h-6"/>
+                                        <path d="m11 11 8-8"/>
+                                        <path d="M14 15H9v-5"/>
+                                    </svg>
+                                </div>
                                 <h3>Merge PDF</h3>
                                 <p>Combine PDFs in the order you want</p>
                             </div>
                             <div class="tool-card" onclick="showTool('split')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">✂️</div>
+                                <div class="tool-icon tool-icon-red">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="6" cy="6" r="3"/>
+                                        <circle cx="6" cy="18" r="3"/>
+                                        <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                                        <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                                        <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                                    </svg>
+                                </div>
                                 <h3>Split PDF</h3>
                                 <p>Separate pages into multiple files</p>
                             </div>
                             <div class="tool-card" onclick="showTool('delete')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">🗑️</div>
+                                <div class="tool-icon tool-icon-red">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="3 6 5 6 21 6"/>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        <line x1="10" y1="11" x2="10" y2="17"/>
+                                        <line x1="14" y1="11" x2="14" y2="17"/>
+                                    </svg>
+                                </div>
                                 <h3>Remove Pages</h3>
                                 <p>Delete unwanted pages from PDF</p>
                             </div>
                             <div class="tool-card" onclick="showTool('extract')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #FF6B6B 0%, #FF4757 100%);">📤</div>
+                                <div class="tool-icon tool-icon-red">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <polyline points="12 18 16 14 12 10"/>
+                                        <line x1="8" y1="14" x2="16" y2="14"/>
+                                    </svg>
+                                </div>
                                 <h3>Extract Pages</h3>
                                 <p>Save specific pages as new PDF</p>
                             </div>
@@ -231,10 +321,17 @@
 
                     <!-- OPTIMIZE PDF -->
                     <section class="tool-category" id="cat-optimize" data-category="optimize">
-                        <h2 class="category-title">⚡ Optimize PDF</h2>
+                        <h2 class="category-title">Optimize PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('compress')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #5AD67D 0%, #40C463 100%);">🗜️</div>
+                                <div class="tool-icon tool-icon-green">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="4 14 10 14 10 20"/>
+                                        <polyline points="20 10 14 10 14 4"/>
+                                        <line x1="14" y1="10" x2="21" y2="3"/>
+                                        <line x1="3" y1="21" x2="10" y2="14"/>
+                                    </svg>
+                                </div>
                                 <h3>Compress PDF</h3>
                                 <p>Reduce file size while optimizing quality</p>
                             </div>
@@ -243,25 +340,52 @@
 
                     <!-- CONVERT TO PDF -->
                     <section class="tool-category" id="cat-to-pdf" data-category="to-pdf">
-                        <h2 class="category-title">🔄 Convert to PDF</h2>
+                        <h2 class="category-title">Convert to PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('image')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">🖼️</div>
+                                <div class="tool-icon tool-icon-amber">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                                        <polyline points="21 15 16 10 5 21"/>
+                                    </svg>
+                                </div>
                                 <h3>Image to PDF</h3>
                                 <p>Convert JPG, PNG images to PDF</p>
                             </div>
                             <div class="tool-card" onclick="showTool('word-to-pdf')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">📝</div>
+                                <div class="tool-icon tool-icon-blue">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                </div>
                                 <h3>Word to PDF</h3>
                                 <p>Convert DOCX documents to PDF</p>
                             </div>
                             <div class="tool-card" onclick="showTool('excel-to-pdf')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">📊</div>
+                                <div class="tool-icon tool-icon-green">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                        <path d="M3 9h18"/>
+                                        <path d="M3 15h18"/>
+                                        <path d="M9 3v18"/>
+                                        <path d="M15 3v18"/>
+                                    </svg>
+                                </div>
                                 <h3>Excel to PDF</h3>
                                 <p>Convert XLSX spreadsheets to PDF</p>
                             </div>
                             <div class="tool-card" onclick="showTool('ppt-to-pdf')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #F9CA24 0%, #F0B90B 100%);">📽️</div>
+                                <div class="tool-icon tool-icon-orange">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                        <line x1="8" y1="21" x2="16" y2="21"/>
+                                        <line x1="12" y1="17" x2="12" y2="21"/>
+                                    </svg>
+                                </div>
                                 <h3>PowerPoint to PDF</h3>
                                 <p>Convert PPTX presentations to PDF</p>
                             </div>
@@ -270,25 +394,49 @@
 
                     <!-- CONVERT FROM PDF -->
                     <section class="tool-category" id="cat-from-pdf" data-category="from-pdf">
-                        <h2 class="category-title">📤 Convert from PDF</h2>
+                        <h2 class="category-title">Convert from PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('pdf-to-word')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">📝</div>
+                                <div class="tool-icon tool-icon-blue">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                        <line x1="10" y1="8" x2="16" y2="8"/>
+                                        <line x1="10" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                </div>
                                 <h3>PDF to Word</h3>
                                 <p>Convert PDF to editable DOCX</p>
                             </div>
                             <div class="tool-card" onclick="showTool('pdf-to-excel')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">📊</div>
+                                <div class="tool-icon tool-icon-green">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="20" x2="18" y2="10"/>
+                                        <line x1="12" y1="20" x2="12" y2="4"/>
+                                        <line x1="6" y1="20" x2="6" y2="14"/>
+                                    </svg>
+                                </div>
                                 <h3>PDF to Excel</h3>
                                 <p>Extract tables to XLSX format</p>
                             </div>
                             <div class="tool-card" onclick="showTool('pdf-to-ppt')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">📽️</div>
+                                <div class="tool-icon tool-icon-orange">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                        <polygon points="10 8 16 11 10 14 10 8" fill="currentColor"/>
+                                    </svg>
+                                </div>
                                 <h3>PDF to PowerPoint</h3>
                                 <p>Convert PDF to PPTX slides</p>
                             </div>
                             <div class="tool-card" onclick="showTool('pdf-to-image')">
-                                <div class="tool-icon" style="background: linear-gradient(135deg, #9B59B6 0%, #8E44AD 100%);">🖼️</div>
+                                <div class="tool-icon tool-icon-purple">
+                                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                                        <polyline points="21 15 16 10 5 21"/>
+                                    </svg>
+                                </div>
                                 <h3>PDF to Image</h3>
                                 <p>Convert PDF pages to JPG/PNG</p>
                             </div>
@@ -302,22 +450,46 @@
                     <p class="section-subtitle">A modern, secure, and private PDF utility designed to run directly in your web browser.</p>
                     <div class="features-grid">
                         <div class="feature-item">
-                            <div class="feature-icon">🔒</div>
+                            <div class="feature-icon feature-icon-red">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    <polyline points="9 12 11 14 15 10"/>
+                                </svg>
+                            </div>
                             <h3>100% Client-Side Privacy</h3>
                             <p>Your documents are never uploaded to any cloud server or stored anywhere. All PDF merging, splitting, and conversions happen locally inside your browser.</p>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">⚡</div>
+                            <div class="feature-icon feature-icon-amber">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                                </svg>
+                            </div>
                             <h3>Blazing Fast Performance</h3>
                             <p>No waiting for slow file uploads or server queues. Files are processed in milliseconds using client-side JavaScript.</p>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">📴</div>
+                            <div class="feature-icon feature-icon-green">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="1" y1="1" x2="23" y2="23"/>
+                                    <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+                                    <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+                                    <path d="M10.71 5.05A16 16 0 0 1 22.58 9"/>
+                                    <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+                                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+                                    <line x1="12" y1="20" x2="12.01" y2="20"/>
+                                </svg>
+                            </div>
                             <h3>Works Offline Anywhere</h3>
                             <p>Once loaded, you can disconnect from the internet and keep editing, merging, and compressing your PDFs securely on any device.</p>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">✨</div>
+                            <div class="feature-icon feature-icon-purple">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="9 12 12 15 16 10"/>
+                                </svg>
+                            </div>
                             <h3>Free with Zero Limits</h3>
                             <p>Enjoy unlimited PDF processing without sign-ups, credit cards, file size paywalls, or annoying watermarks on your generated documents.</p>
                         </div>
@@ -332,7 +504,7 @@
                         <details class="faq-item" open>
                             <summary class="faq-question">
                                 <span>Are my files safe and private?</span>
-                                <span class="faq-chevron">▾</span>
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                             </summary>
                             <div class="faq-answer">
                                 <p>Yes, completely. Unlike traditional online PDF editors that send your sensitive documents to remote servers, our PDF tools process everything locally on your computer via client-side JavaScript. Your files never leave your device.</p>
@@ -341,7 +513,7 @@
                         <details class="faq-item">
                             <summary class="faq-question">
                                 <span>How do I merge multiple PDF files?</span>
-                                <span class="faq-chevron">▾</span>
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                             </summary>
                             <div class="faq-answer">
                                 <p>Select the <strong>Merge PDF</strong> tool, drag and drop or browse to select your PDF documents, rearrange the files into your preferred order, and click "Merge PDFs" to instantly download the combined document.</p>
@@ -350,7 +522,7 @@
                         <details class="faq-item">
                             <summary class="faq-question">
                                 <span>How can I compress a PDF without losing quality?</span>
-                                <span class="faq-chevron">▾</span>
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                             </summary>
                             <div class="faq-answer">
                                 <p>Click <strong>Compress PDF</strong>, select your document, and pick your preferred compression level (Extreme, Recommended, or High Quality). Our tool reduces redundant metadata and optimizes imagery to save disk space while preserving text readability.</p>
@@ -359,7 +531,7 @@
                         <details class="faq-item">
                             <summary class="faq-question">
                                 <span>Can I convert images and Word files to PDF?</span>
-                                <span class="faq-chevron">▾</span>
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                             </summary>
                             <div class="faq-answer">
                                 <p>Yes! You can convert JPG, PNG, and WebP images directly into a PDF, or convert Word (DOCX) files to clean, shareable PDFs with one click.</p>
@@ -368,7 +540,7 @@
                         <details class="faq-item">
                             <summary class="faq-question">
                                 <span>Is there any file size limit or cost?</span>
-                                <span class="faq-chevron">▾</span>
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
                             </summary>
                             <div class="faq-answer">
                                 <p>No. PDF Tools is 100% free and open to everyone without daily task limits, subscriptions, or watermarks.</p>
@@ -380,7 +552,10 @@
 
             <!-- Tool View Container -->
             <div id="tool-view" class="view-container">
-                <button class="back-btn" onclick="showView('home')">← Back to all tools</button>
+                <button class="back-btn" onclick="showView('home')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    <span>Back to all tools</span>
+                </button>
                 
                 <div class="tool-content">
                     <div id="tool-header">
@@ -399,7 +574,14 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <div class="logo">
-                        <span class="logo-icon">❤️</span>
+                        <span class="logo-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <path d="M9 13h6"/>
+                                <path d="M9 17h4"/>
+                            </svg>
+                        </span>
                         <span class="logo-text">PDF Tools</span>
                     </div>
                     <p class="footer-desc">Free, privacy-first, client-side PDF tools for everyone. Merge, split, compress, and convert PDF documents directly in your browser.</p>
@@ -421,7 +603,10 @@
                     </div>
                     <div class="footer-col">
                         <h4>Privacy & Security</h4>
-                        <p class="privacy-badge">🔒 100% Client-Side Processing</p>
+                        <p class="privacy-badge">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                            <span>100% Client-Side Processing</span>
+                        </p>
                         <p class="privacy-note">Zero server uploads. Your confidential files stay on your device.</p>
                     </div>
                 </div>
@@ -432,10 +617,48 @@
         </footer>
     </div>
 
+    <!-- PWA Install Banner -->
+    <div class="pwa-install-banner" id="pwa-install-banner" aria-live="polite">
+        <div class="pwa-banner-content">
+            <div class="pwa-banner-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <path d="M12 18v-6"/>
+                    <path d="m9 15 3 3 3-3"/>
+                </svg>
+            </div>
+            <div class="pwa-banner-info">
+                <div class="pwa-banner-title">Install PDF Tools App</div>
+                <div class="pwa-banner-desc">Work offline, faster access, and zero installation files needed.</div>
+            </div>
+            <div class="pwa-banner-btns">
+                <button type="button" class="pwa-banner-btn-install" onclick="triggerPWAInstall()">Install</button>
+                <button type="button" class="pwa-banner-btn-dismiss" onclick="dismissPWABanner()" aria-label="Dismiss banner">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- iOS PWA Instructions Modal -->
+    <div class="pwa-ios-modal" id="pwa-ios-modal" style="display:none;" onclick="if(event.target===this)closeIOSModal()">
+        <div class="pwa-ios-sheet">
+            <div class="pwa-ios-header">
+                <h3>Install PDF Tools on iPhone / iPad</h3>
+                <button type="button" class="pwa-ios-close" onclick="closeIOSModal()">&times;</button>
+            </div>
+            <ol class="pwa-ios-steps">
+                <li>Tap the <strong>Share</strong> button <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin:0 4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> at the bottom of Safari</li>
+                <li>Scroll down and tap <strong>Add to Home Screen</strong> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin:0 4px;"><rect x="3" y="3" width="18" height="18" rx="4"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></li>
+                <li>Tap <strong>Add</strong> in the top-right corner to access PDF Tools anytime as an app!</li>
+            </ol>
+            <button type="button" class="pwa-banner-btn-install" style="width:100%;margin-top:1.25rem;" onclick="closeIOSModal()">Got It</button>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="app.js?v=2.2"></script>
+    <script src="app.js?v=2.3"></script>
 </body>
 </html>

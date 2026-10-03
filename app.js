@@ -87,7 +87,7 @@ function filterCategory(category, buttonEl) {
 
 const toolConfigs = {
     merge: {
-        title: '🔗 Merge PDF',
+        title: 'Merge PDF',
         description: 'Combine multiple PDF files into one document',
         multiple: true,
         acceptedFormats: '.pdf',
@@ -96,7 +96,7 @@ const toolConfigs = {
         handler: mergePDFs
     },
     split: {
-        title: '✂️ Split PDF',
+        title: 'Split PDF',
         description: 'Separate one PDF into multiple files',
         multiple: false,
         acceptedFormats: '.pdf',
@@ -120,7 +120,7 @@ const toolConfigs = {
         handler: splitPDF
     },
     delete: {
-        title: '🗑️ Remove Pages',
+        title: 'Remove Pages',
         description: 'Delete unwanted pages from your PDF',
         multiple: false,
         acceptedFormats: '.pdf',
@@ -136,7 +136,7 @@ const toolConfigs = {
         handler: deletePagesFromPDF
     },
     extract: {
-        title: '📤 Extract Pages',
+        title: 'Extract Pages',
         description: 'Save specific pages as a new PDF file',
         multiple: false,
         acceptedFormats: '.pdf',
@@ -152,7 +152,7 @@ const toolConfigs = {
         handler: extractPagesFromPDF
     },
     compress: {
-        title: '🗜️ Compress PDF',
+        title: 'Compress PDF',
         description: 'Reduce PDF file size while maintaining quality',
         multiple: false,
         acceptedFormats: '.pdf',
@@ -174,7 +174,7 @@ const toolConfigs = {
         handler: compressPDF
     },
     image: {
-        title: '🖼️ Image to PDF',
+        title: 'Image to PDF',
         description: 'Convert JPG, PNG images into PDF format',
         multiple: true,
         acceptedFormats: '.jpg,.jpeg,.png,.webp',
@@ -192,7 +192,7 @@ const toolConfigs = {
         handler: convertImagesToPDF
     },
     'word-to-pdf': {
-        title: '📝 Word to PDF',
+        title: 'Word to PDF',
         description: 'Convert DOCX documents to PDF format',
         multiple: true,
         acceptedFormats: '.docx',
@@ -214,7 +214,7 @@ const toolConfigs = {
             </div>
             <div class="option-group" style="background: #E8F5E9; padding: 1rem; border-radius: 8px; border-left: 4px solid #4CAF50; margin-top: 1rem;">
                 <p style="margin: 0; color: #2E7D32; font-size: 0.9rem;">
-                    <strong>✅ High-Quality Conversion:</strong> Uses advanced rendering engine to preserve fonts, formatting, styles, tables, and layout - similar to Adobe's converter. Text remains selectable in the PDF.
+                    <strong>High-Quality Conversion:</strong> Preserves fonts, styles, tables, and layout. Text remains selectable.
                 </p>
             </div>
         `,
@@ -222,16 +222,16 @@ const toolConfigs = {
         handler: convertWordToPDF
     },
     'excel-to-pdf': {
-        title: '📊 Excel to PDF',
+        title: 'Excel to PDF',
         description: 'Convert XLSX spreadsheets to PDF format',
         multiple: false,
         acceptedFormats: '.xlsx',
         options: `
             <div class="option-group" style="background: #FFF3CD; padding: 1rem; border-radius: 8px; border-left: 4px solid #F0B90B;">
                 <p style="margin: 0; color: #856404;">
-                    <strong>⚠️ Browser Limitation:</strong> Excel to PDF conversion requires complex spreadsheet rendering not available in browsers.
+                    <strong>Browser Limitation:</strong> Excel to PDF conversion requires complex spreadsheet rendering not available in browsers.
                     <br><br>
-                    <strong>Recommended method:</strong> Open your XLSX file in Excel/LibreOffice Calc → File → Save As → PDF
+                    <strong>Recommended method:</strong> Open your XLSX file in Excel/LibreOffice Calc &rarr; File &rarr; Save As &rarr; PDF
                 </p>
             </div>
         `,
@@ -239,33 +239,16 @@ const toolConfigs = {
         handler: showOfficeConversionHelp
     },
     'ppt-to-pdf': {
-        title: '📽️ PowerPoint to PDF',
+        title: 'PowerPoint to PDF',
         description: 'Convert PPTX presentations to PDF format',
         multiple: false,
-        acceptedFormats: '.pptx',
-        options: `
-            <div class="option-group" style="background: #FFF3CD; padding: 1rem; border-radius: 8px; border-left: 4px solid #F0B90B;">
-                <p style="margin: 0; color: #856404;">
-                    <strong>⚠️ Browser Limitation:</strong> PowerPoint to PDF conversion requires slide rendering not available in browsers.
-                    <br><br>
-                    <strong>Recommended method:</strong> Open your XLSX file in Excel/LibreOffice Calc → File → Save As → PDF
-                </p>
-            </div>
-        `,
-        actionText: 'Learn How to Convert',
-        handler: showOfficeConversionHelp
-    },
-    'ppt-to-pdf': {
-        title: '📽️ PowerPoint to PDF',
-        description: 'Convert PPTX presentations to PDF format',
-        multiple: true,
         acceptedFormats: '.ppt,.pptx',
         options: `
             <div class="option-group" style="background: #FFF3CD; padding: 1rem; border-radius: 8px; border-left: 4px solid #F0B90B;">
                 <p style="margin: 0; color: #856404;">
-                    <strong>⚠️ Browser Limitation:</strong> Direct PowerPoint to PDF conversion requires Microsoft Office or LibreOffice installed on your system.
+                    <strong>Browser Limitation:</strong> Direct PowerPoint to PDF conversion requires Microsoft Office or LibreOffice installed on your system.
                     <br><br>
-                    <strong>Recommended method:</strong> Open your PPTX file in PowerPoint/LibreOffice Impress → File → Save As → PDF
+                    <strong>Recommended method:</strong> Open your PPTX file in PowerPoint/LibreOffice Impress &rarr; File &rarr; Save As &rarr; PDF
                 </p>
             </div>
         `,
@@ -273,19 +256,19 @@ const toolConfigs = {
         handler: showOfficeConversionHelp
     },
     'pdf-to-word': {
-        title: '📝 PDF to Word',
+        title: 'PDF to Word',
         description: 'Convert PDF to editable DOCX document',
         multiple: false,
         acceptedFormats: '.pdf',
         options: `
             <div class="option-group" style="background: #FFF3CD; padding: 1rem; border-radius: 8px; border-left: 4px solid #F0B90B;">
                 <p style="margin: 0; color: #856404;">
-                    <strong>⚠️ Feature Unavailable Offline:</strong> PDF to Word conversion requires advanced text extraction and formatting that cannot run in a browser.
+                    <strong>Feature Notice:</strong> Offline PDF to editable Word conversion requires desktop word processor rendering.
                     <br><br>
                     <strong>Suggested alternatives:</strong>
-                    <br>• Use Adobe Acrobat (commercial)
-                    <br>• Use online services like iLovePDF.com or Smallpdf.com
-                    <br>• Install desktop software like PDFtk or PyPDF tools
+                    <br>&bull; Use Adobe Acrobat or Microsoft Word (Open &gt; PDF)
+                    <br>&bull; Use online conversion services
+                    <br>&bull; Open with LibreOffice Draw/Writer
                 </p>
             </div>
         `,
@@ -293,19 +276,19 @@ const toolConfigs = {
         handler: showPDFConversionHelp
     },
     'pdf-to-excel': {
-        title: '📊 PDF to Excel',
+        title: 'PDF to Excel',
         description: 'Extract tables from PDF to XLSX format',
         multiple: false,
         acceptedFormats: '.pdf',
         options: `
             <div class="option-group" style="background: #FFF3CD; padding: 1rem; border-radius: 8px; border-left: 4px solid #F0B90B;">
                 <p style="margin: 0; color: #856404;">
-                    <strong>⚠️ Feature Unavailable Offline:</strong> PDF to Excel conversion requires table detection and data extraction that cannot run in a browser.
+                    <strong>Feature Notice:</strong> PDF to Excel conversion requires automated table detection algorithms.
                     <br><br>
                     <strong>Suggested alternatives:</strong>
-                    <br>• Use Adobe Acrobat (commercial)
-                    <br>• Use online services like iLovePDF.com or Smallpdf.com
-                    <br>• Install Tabula (open-source desktop tool)
+                    <br>&bull; Use Tabula (free desktop data extractor)
+                    <br>&bull; Open in Microsoft Excel (Data &gt; Get Data &gt; From File &gt; From PDF)
+                    <br>&bull; Use Adobe Acrobat
                 </p>
             </div>
         `,
@@ -313,19 +296,19 @@ const toolConfigs = {
         handler: showPDFConversionHelp
     },
     'pdf-to-ppt': {
-        title: '📽️ PDF to PowerPoint',
+        title: 'PDF to PowerPoint',
         description: 'Convert PDF pages to PPTX slides',
         multiple: false,
         acceptedFormats: '.pdf',
         options: `
             <div class="option-group" style="background: #FFF3CD; padding: 1rem; border-radius: 8px; border-left: 4px solid #F0B90B;">
                 <p style="margin: 0; color: #856404;">
-                    <strong>⚠️ Feature Unavailable Offline:</strong> PDF to PowerPoint conversion requires advanced content extraction that cannot run in a browser.
+                    <strong>Feature Notice:</strong> Offline PDF to presentation conversion requires desktop office suites.
                     <br><br>
                     <strong>Suggested alternatives:</strong>
-                    <br>• Use Adobe Acrobat (commercial)
-                    <br>• Use online services like iLovePDF.com or Smallpdf.com
-                    <br>• Manually copy content from PDF to PowerPoint
+                    <br>&bull; Use Adobe Acrobat (Export to PPTX)
+                    <br>&bull; Convert PDF to Images, then insert slides into PowerPoint
+                    <br>&bull; Open in LibreOffice Impress
                 </p>
             </div>
         `,
@@ -333,7 +316,7 @@ const toolConfigs = {
         handler: showPDFConversionHelp
     },
     'pdf-to-image': {
-        title: '🖼️ PDF to Image',
+        title: 'PDF to Image',
         description: 'Convert PDF pages to JPG or PNG images',
         multiple: false,
         acceptedFormats: '.pdf',
@@ -378,7 +361,13 @@ function renderToolWorkspace(toolName) {
              ondragover="handleDragOver(event)"
              ondragleave="handleDragLeave(event)"
              onclick="document.getElementById('file-input-${toolName}').click()">
-            <div class="upload-icon">📁</div>
+            <div class="upload-icon">
+                <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+            </div>
             <h3>Click to select ${config.multiple ? 'files' : 'file'}</h3>
             <p>or drag and drop ${config.multiple ? 'PDF files' : 'a file'} here</p>
             <input type="file" 
@@ -491,7 +480,14 @@ function renderFileList(toolName) {
     container.innerHTML = files.map((file, index) => `
         <div class="file-item">
             <div class="file-info">
-                <div class="file-icon">📄</div>
+                <div class="file-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                </div>
                 <div class="file-details">
                     <div class="file-name">${file.name}</div>
                     <div class="file-size">${formatFileSize(file.size)}</div>
@@ -694,7 +690,7 @@ async function loadPDFPreview(file, toolName) {
         toolbar.className = 'preview-toolbar';
         toolbar.innerHTML = `
             <div class="toolbar-left">
-                <span class="preview-total-pages">📄 ${pageCount} ${pageCount === 1 ? 'Page' : 'Pages'}</span>
+                <span class="preview-total-pages">${pageCount} ${pageCount === 1 ? 'Page' : 'Pages'}</span>
                 <span class="preview-hint">Click pages to toggle selection</span>
             </div>
             <div class="toolbar-actions">
@@ -731,7 +727,7 @@ async function loadPDFPreview(file, toolName) {
         console.error('Error loading PDF preview:', error);
         grid.innerHTML = `
             <div style="padding: 1.5rem; text-align: center; color: var(--text-gray); background: #FFF3CD; border-radius: 8px;">
-                ⚠️ Could not generate page thumbnails: ${error.message}
+                Could not generate page thumbnails: ${error.message}
             </div>
         `;
     }
@@ -1102,11 +1098,11 @@ async function convertImagesToPDF(toolName) {
 // ===========================
 
 function showOfficeConversionHelp(toolName) {
-    alert('💡 Quick Guide:\n\n1. Open your document in Microsoft Office or LibreOffice\n2. Click File → Save As (or Export)\n3. Choose PDF as the format\n4. Click Save\n\nThis method preserves all formatting and works offline!');
+    alert('Quick Guide:\n\n1. Open your document in Microsoft Office or LibreOffice\n2. Click File → Save As (or Export)\n3. Choose PDF as the format\n4. Click Save\n\nThis method preserves all formatting and works offline!');
 }
 
 function showPDFConversionHelp(toolName) {
-    alert('💡 Alternative Solutions:\n\nOnline Services (require internet):\n• iLovePDF.com\n• Smallpdf.com\n• PDF2Go.com\n\nDesktop Software:\n• Adobe Acrobat (commercial)\n• LibreOffice (free, can import some PDFs)\n• Calibre (free ebook converter)\n\nNote: This tool is designed for offline use. PDF to Office conversion requires complex text extraction not available in browsers.');
+    alert('Alternative Solutions:\n\nOnline Services (require internet):\n• iLovePDF.com\n• Smallpdf.com\n• PDF2Go.com\n\nDesktop Software:\n• Adobe Acrobat (commercial)\n• LibreOffice (free, can import some PDFs)\n• Calibre (free ebook converter)\n\nNote: This tool is designed for offline use. PDF to Office conversion requires complex text extraction not available in browsers.');
 }
 
 async function convertWordToPDF(toolName) {
@@ -1244,9 +1240,9 @@ async function convertWordToPDF(toolName) {
         let errorMsg = 'Error converting document: ' + error.message;
         
         if (error.message.includes('not defined')) {
-            errorMsg += '\n\n🔄 Please refresh the page (Ctrl + F5) to reload the libraries.';
+            errorMsg += '\n\nPlease refresh the page (Ctrl + F5) to reload the libraries.';
         } else if (error.message.includes('mammoth') || error.message.includes('rendering')) {
-            errorMsg += '\n\n💡 Tips:\n• Make sure the file is a valid DOCX (not DOC)\n• Try opening and re-saving the file in Word\n• Large documents may take longer to process';
+            errorMsg += '\n\nTips:\n• Make sure the file is a valid DOCX (not DOC)\n• Try opening and re-saving the file in Word\n• Large documents may take longer to process';
         }
         
         alert(errorMsg);
@@ -1372,9 +1368,124 @@ function downloadFile(data, filename, mimeType) {
 }
 
 // ===========================
+// PWA INSTALLATION & SERVICE WORKER
+// ===========================
+
+let deferredPWAEvent = null;
+
+// Register Service Worker for offline capability & PWA install prompt
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => {
+                console.log('PDF Tools Service Worker active:', reg.scope);
+            })
+            .catch(err => {
+                console.warn('Service Worker registration skipped:', err);
+            });
+    });
+}
+
+function isStandaloneApp() {
+    return window.matchMedia('(display-mode: standalone)').matches || 
+           window.navigator.standalone === true || 
+           document.referrer.includes('android-app://');
+}
+
+// Capture beforeinstallprompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPWAEvent = e;
+
+    const navBtn = document.getElementById('install-btn-nav');
+    if (navBtn) navBtn.style.display = 'inline-flex';
+
+    const banner = document.getElementById('pwa-install-banner');
+    const dismissed = localStorage.getItem('pdf_tools_pwa_dismissed');
+    if (banner && !dismissed && !isStandaloneApp()) {
+        setTimeout(() => {
+            banner.classList.add('show');
+        }, 1500);
+    }
+});
+
+window.addEventListener('appinstalled', () => {
+    deferredPWAEvent = null;
+    hidePWAPrompts();
+    showToastNotification('PDF Tools has been installed successfully!');
+});
+
+async function triggerPWAInstall() {
+    if (deferredPWAEvent) {
+        deferredPWAEvent.prompt();
+        const choice = await deferredPWAEvent.userChoice;
+        if (choice && choice.outcome === 'accepted') {
+            console.log('User accepted PWA installation');
+        }
+        deferredPWAEvent = null;
+        hidePWAPrompts();
+        return;
+    }
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS) {
+        showIOSInstallModal();
+        return;
+    }
+
+    if (isStandaloneApp()) {
+        alert('PDF Tools is already installed and running on your device.');
+    } else {
+        alert('To install PDF Tools:\n\n• On Chrome / Edge (Desktop): Click the Install icon in the address bar (top-right)\n• On Android / Chrome: Tap Menu (three dots) -> "Install App" or "Add to Home Screen"');
+    }
+}
+
+function dismissPWABanner() {
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.classList.remove('show');
+    localStorage.setItem('pdf_tools_pwa_dismissed', 'true');
+}
+
+function hidePWAPrompts() {
+    const banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.classList.remove('show');
+    const navBtn = document.getElementById('install-btn-nav');
+    if (navBtn && isStandaloneApp()) navBtn.style.display = 'none';
+}
+
+function showIOSInstallModal() {
+    const modal = document.getElementById('pwa-ios-modal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeIOSModal() {
+    const modal = document.getElementById('pwa-ios-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function showToastNotification(message) {
+    let toast = document.getElementById('app-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'app-toast';
+        toast.className = 'app-toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3500);
+}
+
+// ===========================
 // INITIALIZATION
 // ===========================
 
 document.addEventListener('DOMContentLoaded', () => {
     showView('home');
+    if (isStandaloneApp()) {
+        const navBtn = document.getElementById('install-btn-nav');
+        if (navBtn) navBtn.style.display = 'none';
+    }
 });
