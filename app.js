@@ -54,8 +54,9 @@ const toolConfigs = {
             <div class="option-group">
                 <label>Page Ranges</label>
                 <input type="text" id="split-ranges" placeholder="e.g., 1-3, 5-7, 9">
-                <div class="option-hint">Specify page ranges separated by commas</div>
+                <div class="option-hint">Specify page ranges separated by commas or click pages below</div>
             </div>
+            <div id="split-grid"></div>
         `,
         actionText: 'Split PDF',
         handler: splitPDF
@@ -413,7 +414,7 @@ function processFiles(files, toolName) {
     document.getElementById(`action-btn-${toolName}`).disabled = false;
     
     // Load PDF for preview if needed
-    if (['delete', 'extract'].includes(toolName) && validFiles[0]) {
+    if (['delete', 'extract', 'split'].includes(toolName) && validFiles[0]) {
         loadPDFPreview(validFiles[0], toolName);
     }
 }
@@ -449,6 +450,7 @@ function removeFile(toolName, index) {
     
     if (fileStorage[toolName].length === 0) {
         document.getElementById(`action-btn-${toolName}`).disabled = true;
+        clearFiles(toolName);
     }
 }
 
@@ -457,11 +459,21 @@ function clearFiles(toolName) {
     renderFileList(toolName);
     document.getElementById(`action-btn-${toolName}`).disabled = true;
     
-    // Clear grids
-    const deleteGrid = document.getElementById('delete-grid');
-    const extractGrid = document.getElementById('extract-grid');
-    if (deleteGrid) deleteGrid.innerHTML = '';
-    if (extractGrid) extractGrid.innerHTML = '';
+    // Clear grids and selections
+    ['delete', 'extract', 'split'].forEach(t => {
+        const grid = document.getElementById(`${t}-grid`);
+        if (grid) grid.innerHTML = '';
+    });
+    if (typeof selectedPagesDelete !== 'undefined') selectedPagesDelete.clear();
+    if (typeof selectedPagesExtract !== 'undefined') selectedPagesExtract.clear();
+    if (typeof selectedPagesSplit !== 'undefined') selectedPagesSplit.clear();
+    
+    const delInput = document.getElementById('delete-pages');
+    if (delInput) delInput.value = '';
+    const extInput = document.getElementById('extract-pages');
+    if (extInput) extInput.value = '';
+    const splitInput = document.getElementById('split-ranges');
+    if (splitInput) splitInput.value = '';
 }
 
 function formatFileSize(bytes) {
@@ -568,56 +580,247 @@ async function splitPDF(toolName) {
 }
 
 // ===========================
-// PDF OPERATIONS - DELETE
+// PDF OPERATIONS - PREVIEW & SELECTION
 // ===========================
 
+// Configure PDF.js worker
+if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
 const selectedPagesDelete = new Set();
+const selectedPagesExtract = new Set();
+const selectedPagesSplit = new Set();
 
 async function loadPDFPreview(file, toolName) {
+    const gridId = `${toolName}-grid`;
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    
+    // Clear previous selection for this tool
+    if (toolName === 'delete') selectedPagesDelete.clear();
+    else if (toolName === 'extract') selectedPagesExtract.clear();
+    else if (toolName === 'split') selectedPagesSplit.clear();
+
+    grid.className = 'page-grid';
+    grid.innerHTML = `
+        <div class="preview-loading">
+            <div class="preview-spinner"></div>
+            <p>Rendering high-resolution page thumbnails...</p>
+        </div>
+    `;
+
     try {
         const arrayBuffer = await file.arrayBuffer();
-        const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
-        const pageCount = pdf.getPageCount();
         
-        const gridId = toolName === 'delete' ? 'delete-grid' : 'extract-grid';
-        const grid = document.getElementById(gridId);
-        if (!grid) return;
-        
-        grid.className = 'page-grid';
-        grid.innerHTML = Array.from({ length: pageCount }, (_, i) => `
-            <div class="page-item" onclick="togglePage${toolName === 'delete' ? 'Delete' : 'Extract'}(${i + 1})">
-                <div class="page-number">Page ${i + 1}</div>
+        if (typeof pdfjsLib !== 'undefined' && !pdfjsLib.GlobalWorkerOptions.workerSrc) {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+
+        let pageCount = 0;
+        let pdfDoc = null;
+
+        if (typeof pdfjsLib !== 'undefined') {
+            const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer.slice(0)) });
+            pdfDoc = await loadingTask.promise;
+            pageCount = pdfDoc.numPages;
+        } else {
+            const pdfLibDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+            pageCount = pdfLibDoc.getPageCount();
+        }
+
+        grid.innerHTML = '';
+
+        // Toolbar with quick actions
+        const toolbar = document.createElement('div');
+        toolbar.className = 'preview-toolbar';
+        toolbar.innerHTML = `
+            <div class="toolbar-left">
+                <span class="preview-total-pages">📄 ${pageCount} ${pageCount === 1 ? 'Page' : 'Pages'}</span>
+                <span class="preview-hint">Click pages to toggle selection</span>
             </div>
-        `).join('');
+            <div class="toolbar-actions">
+                <button type="button" class="preview-tool-btn" onclick="selectAllPages('${toolName}', ${pageCount})">Select All</button>
+                <button type="button" class="preview-tool-btn" onclick="clearSelectedPages('${toolName}')">Deselect All</button>
+            </div>
+        `;
+        grid.appendChild(toolbar);
+
+        const itemsContainer = document.createElement('div');
+        itemsContainer.className = 'page-items-container';
+        grid.appendChild(itemsContainer);
+
+        // Build page cards with skeleton loader
+        for (let i = 1; i <= pageCount; i++) {
+            const pageItem = document.createElement('div');
+            pageItem.className = 'page-item';
+            pageItem.id = `${toolName}-page-${i}`;
+            pageItem.onclick = () => togglePageSelection(toolName, i);
+            pageItem.innerHTML = `
+                <div class="page-canvas-wrapper" id="${toolName}-wrapper-${i}">
+                    <div class="page-skeleton">Page ${i}</div>
+                </div>
+                <div class="page-number">Page ${i}</div>
+            `;
+            itemsContainer.appendChild(pageItem);
+        }
+
+        // Render thumbnails via PDF.js
+        if (pdfDoc) {
+            renderPagesThumbnails(pdfDoc, toolName, pageCount);
+        }
     } catch (error) {
         console.error('Error loading PDF preview:', error);
+        grid.innerHTML = `
+            <div style="padding: 1.5rem; text-align: center; color: var(--text-gray); background: #FFF3CD; border-radius: 8px;">
+                ⚠️ Could not generate page thumbnails: ${error.message}
+            </div>
+        `;
     }
 }
 
-function togglePageDelete(pageNum) {
-    if (selectedPagesDelete.has(pageNum)) {
-        selectedPagesDelete.delete(pageNum);
-    } else {
-        selectedPagesDelete.add(pageNum);
-    }
-    
-    document.querySelectorAll('#delete-grid .page-item').forEach((el, index) => {
-        if (selectedPagesDelete.has(index + 1)) {
-            el.classList.add('selected');
-        } else {
-            el.classList.remove('selected');
+async function renderPagesThumbnails(pdfDoc, toolName, pageCount) {
+    for (let i = 1; i <= pageCount; i++) {
+        const wrapper = document.getElementById(`${toolName}-wrapper-${i}`);
+        if (!wrapper) break;
+        
+        try {
+            const page = await pdfDoc.getPage(i);
+            const unscaledViewport = page.getViewport({ scale: 1.0 });
+            
+            // 240px wide thumbnail for clear readability of page content
+            const targetWidth = 240;
+            const scale = targetWidth / unscaledViewport.width;
+            const viewport = page.getViewport({ scale: scale });
+            
+            const canvas = document.createElement('canvas');
+            canvas.className = 'page-canvas';
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+            
+            if (wrapper.parentNode) {
+                wrapper.innerHTML = '';
+                wrapper.appendChild(canvas);
+            }
+        } catch (e) {
+            console.warn(`Error rendering thumbnail for page ${i}:`, e);
         }
-    });
-    
-    updateDeleteInput();
-}
-
-function updateDeleteInput() {
-    const input = document.getElementById('delete-pages');
-    if (input && selectedPagesDelete.size > 0) {
-        input.value = Array.from(selectedPagesDelete).sort((a, b) => a - b).join(', ');
     }
 }
+
+function togglePageSelection(toolName, pageNum) {
+    let set;
+    if (toolName === 'delete') set = selectedPagesDelete;
+    else if (toolName === 'extract') set = selectedPagesExtract;
+    else if (toolName === 'split') set = selectedPagesSplit;
+    if (!set) return;
+
+    if (set.has(pageNum)) {
+        set.delete(pageNum);
+    } else {
+        set.add(pageNum);
+    }
+
+    const pageItem = document.getElementById(`${toolName}-page-${pageNum}`);
+    if (pageItem) {
+        pageItem.classList.toggle('selected', set.has(pageNum));
+    }
+
+    syncSelectionToInput(toolName);
+}
+
+function selectAllPages(toolName, pageCount) {
+    let set;
+    if (toolName === 'delete') set = selectedPagesDelete;
+    else if (toolName === 'extract') set = selectedPagesExtract;
+    else if (toolName === 'split') set = selectedPagesSplit;
+    if (!set) return;
+
+    set.clear();
+    for (let i = 1; i <= pageCount; i++) {
+        set.add(i);
+    }
+    document.querySelectorAll(`#${toolName}-grid .page-item`).forEach(el => el.classList.add('selected'));
+    syncSelectionToInput(toolName);
+}
+
+function clearSelectedPages(toolName) {
+    let set;
+    if (toolName === 'delete') set = selectedPagesDelete;
+    else if (toolName === 'extract') set = selectedPagesExtract;
+    else if (toolName === 'split') set = selectedPagesSplit;
+    if (!set) return;
+
+    set.clear();
+    document.querySelectorAll(`#${toolName}-grid .page-item`).forEach(el => el.classList.remove('selected'));
+    syncSelectionToInput(toolName);
+}
+
+function syncSelectionToInput(toolName) {
+    let set, inputId;
+    if (toolName === 'delete') { set = selectedPagesDelete; inputId = 'delete-pages'; }
+    else if (toolName === 'extract') { set = selectedPagesExtract; inputId = 'extract-pages'; }
+    else if (toolName === 'split') { set = selectedPagesSplit; inputId = 'split-ranges'; }
+    
+    const input = document.getElementById(inputId);
+    if (!input || !set) return;
+
+    if (set.size === 0) {
+        input.value = '';
+        return;
+    }
+
+    const sorted = Array.from(set).sort((a, b) => a - b);
+    const ranges = [];
+    let start = sorted[0];
+    let prev = sorted[0];
+
+    for (let i = 1; i < sorted.length; i++) {
+        if (sorted[i] === prev + 1) {
+            prev = sorted[i];
+        } else {
+            ranges.push(start === prev ? `${start}` : `${start}-${prev}`);
+            start = sorted[i];
+            prev = sorted[i];
+        }
+    }
+    ranges.push(start === prev ? `${start}` : `${start}-${prev}`);
+
+    input.value = ranges.join(', ');
+}
+
+function onManualPageInput(toolName) {
+    let set, inputId;
+    if (toolName === 'delete') { set = selectedPagesDelete; inputId = 'delete-pages'; }
+    else if (toolName === 'extract') { set = selectedPagesExtract; inputId = 'extract-pages'; }
+    else if (toolName === 'split') { set = selectedPagesSplit; inputId = 'split-ranges'; }
+    
+    const input = document.getElementById(inputId);
+    if (!input || !set) return;
+
+    const totalPages = document.querySelectorAll(`#${toolName}-grid .page-item`).length;
+    if (totalPages === 0) return;
+
+    const parsed = parsePageRanges(input.value, totalPages).flat();
+    set.clear();
+    parsed.forEach(p => set.add(p));
+
+    document.querySelectorAll(`#${toolName}-grid .page-item`).forEach((el, index) => {
+        el.classList.toggle('selected', set.has(index + 1));
+    });
+}
+
+// Backward compatibility helpers
+function togglePageDelete(pageNum) { togglePageSelection('delete', pageNum); }
+function togglePageExtract(pageNum) { togglePageSelection('extract', pageNum); }
+function updateDeleteInput() { syncSelectionToInput('delete'); }
+function updateExtractInput() { syncSelectionToInput('extract'); }
 
 async function deletePagesFromPDF(toolName) {
     const files = fileStorage[toolName];
@@ -666,32 +869,6 @@ async function deletePagesFromPDF(toolName) {
 // PDF OPERATIONS - EXTRACT
 // ===========================
 
-const selectedPagesExtract = new Set();
-
-function togglePageExtract(pageNum) {
-    if (selectedPagesExtract.has(pageNum)) {
-        selectedPagesExtract.delete(pageNum);
-    } else {
-        selectedPagesExtract.add(pageNum);
-    }
-    
-    document.querySelectorAll('#extract-grid .page-item').forEach((el, index) => {
-        if (selectedPagesExtract.has(index + 1)) {
-            el.classList.add('selected');
-        } else {
-            el.classList.remove('selected');
-        }
-    });
-    
-    updateExtractInput();
-}
-
-function updateExtractInput() {
-    const input = document.getElementById('extract-pages');
-    if (input && selectedPagesExtract.size > 0) {
-        input.value = Array.from(selectedPagesExtract).sort((a, b) => a - b).join(', ');
-    }
-}
 
 async function extractPagesFromPDF(toolName) {
     const files = fileStorage[toolName];
@@ -1049,12 +1226,48 @@ async function convertPDFToImages(toolName) {
         
         showProgress(toolName, 20, `Converting ${pagesToConvert.length} page(s)...`);
         
-        // We need to use PDF.js or canvas to render PDF to image
-        // Since we're using pdf-lib which doesn't have rendering, we'll show a helpful message
-        alert(`⚠️ PDF to Image Conversion\n\nDirect conversion requires additional libraries not included for offline use.\n\n💡 Alternative Methods:\n\n1. Screenshot Tool:\n   • Open PDF in browser\n   • Use Windows Snipping Tool (Win + Shift + S)\n   • Capture each page\n\n2. Print to Image:\n   • Open PDF in browser\n   • Right-click → Print\n   • Save as PDF, then use screenshot\n\n3. Python Script:\n   • Install: pip install pdf2image\n   • Run: pdf2image.convert_from_path('input.pdf')\n\nFor a browser-based solution, we would need to include PDF.js library (adds ~500KB).`);
+        if (typeof pdfjsLib === 'undefined') {
+            alert('PDF.js library is loading. Please try again in a moment.');
+            hideProgress(toolName);
+            return;
+        }
+
+        const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) });
+        const pdfDoc = await loadingTask.promise;
         
-        hideProgress(toolName);
-        
+        const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+        const extension = format === 'png' ? 'png' : 'jpg';
+
+        for (let i = 0; i < pagesToConvert.length; i++) {
+            const pageNum = pagesToConvert[i];
+            const pct = 20 + Math.round(((i + 1) / pagesToConvert.length) * 75);
+            showProgress(toolName, pct, `Rendering page ${pageNum} (${i + 1}/${pagesToConvert.length})...`);
+
+            const page = await pdfDoc.getPage(pageNum);
+            const viewport = page.getViewport({ scale: scale });
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            const ctx = canvas.getContext('2d');
+
+            if (format === 'jpg') {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+            await new Promise((resolve) => {
+                canvas.toBlob((blob) => {
+                    const baseName = files[0].name.replace(/\.[^/.]+$/, '');
+                    downloadFile(blob, `${baseName}_page_${pageNum}.${extension}`, mimeType);
+                    resolve();
+                }, mimeType, 0.92);
+            });
+        }
+
+        showProgress(toolName, 100, 'Images downloaded!');
+        setTimeout(() => hideProgress(toolName), 2000);
     } catch (error) {
         alert('Error: ' + error.message);
         hideProgress(toolName);
