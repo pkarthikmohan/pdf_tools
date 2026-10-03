@@ -118,7 +118,27 @@ body {
     width: 100%;
     margin: 0 auto;
     padding: 2rem;
+    box-sizing: border-box; /* Ensures padding does not break full-width scaling */
 }
+.tool-cards {
+    display: grid;
+    /* Changed auto-fill to auto-fit to force columns to scale horizontally and fit the screen width */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    width: 100%; /* Ensures the grid extends completely across its parent */
+}
+.tools-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 100%;
+}
+
+.tool-category {
+    animation: fadeIn 0.5s ease-in;
+    width: 100%;
+}
+
 
 .view-container {
     display: none;
