@@ -117,17 +117,64 @@
         <!-- Top Navigation -->
         <header class="navbar">
             <div class="nav-content">
-                <div class="logo">
+                <div class="logo" onclick="showView('home')">
                     <span class="logo-icon">❤️</span>
                     <span class="logo-text">PDF Tools</span>
                 </div>
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu" onclick="toggleMobileMenu()">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </button>
                 <nav class="nav-links">
                     <button class="nav-link active" onclick="showView('home')">Home</button>
                     <button class="nav-link" onclick="showTool('merge')">Merge PDF</button>
-                    <button class="nav-link" onclick="showTool('word-to-pdf')">Word to PDF</button>
+                    <button class="nav-link" onclick="showTool('split')">Split PDF</button>
                     <button class="nav-link" onclick="showTool('compress')">Compress PDF</button>
+                    <button class="nav-link" onclick="showTool('word-to-pdf')">Word to PDF</button>
                     <button class="nav-link" onclick="showTool('image')">Image to PDF</button>
                 </nav>
+            </div>
+            <!-- Mobile Menu Drawer -->
+            <div class="mobile-menu" id="mobile-menu">
+                <div class="mobile-menu-links">
+                    <button class="mobile-nav-item active" onclick="mobileNavigateHome()">
+                        <span class="mobile-nav-icon">🏠</span>
+                        <span>Home</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('merge')">
+                        <span class="mobile-nav-icon">🔗</span>
+                        <span>Merge PDF</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('split')">
+                        <span class="mobile-nav-icon">✂️</span>
+                        <span>Split PDF</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('delete')">
+                        <span class="mobile-nav-icon">🗑️</span>
+                        <span>Remove Pages</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('extract')">
+                        <span class="mobile-nav-icon">📤</span>
+                        <span>Extract Pages</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('compress')">
+                        <span class="mobile-nav-icon">🗜️</span>
+                        <span>Compress PDF</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('image')">
+                        <span class="mobile-nav-icon">🖼️</span>
+                        <span>Image to PDF</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('word-to-pdf')">
+                        <span class="mobile-nav-icon">📝</span>
+                        <span>Word to PDF</span>
+                    </button>
+                    <button class="mobile-nav-item" onclick="mobileNavigateTool('pdf-to-image')">
+                        <span class="mobile-nav-icon">📸</span>
+                        <span>PDF to Image</span>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -136,14 +183,26 @@
             <!-- Home View - Tool Grid -->
             <div id="home-view" class="view-container active">
                 <div class="hero-section">
+                    <div class="hero-badge">🔒 100% Client-Side • Free • Works Offline</div>
                     <h1>Every PDF tool you need in one place</h1>
-                    <p>All the tools you need to work with PDFs. Free, easy to use, and works offline!</p>
+                    <p>All the tools you need to work with PDFs. Free, fast, private, and works directly in your browser!</p>
+                </div>
+
+                <!-- Category Filters (Horizontal Touch Scroll on Mobile) -->
+                <div class="category-filters-wrapper">
+                    <div class="category-filters">
+                        <button type="button" class="filter-chip active" onclick="filterCategory('all', this)">🔥 All Tools</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('organize', this)">📋 Organize</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('optimize', this)">⚡ Optimize</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('to-pdf', this)">🔄 To PDF</button>
+                        <button type="button" class="filter-chip" onclick="filterCategory('from-pdf', this)">📤 From PDF</button>
+                    </div>
                 </div>
 
                 <!-- Tool Categories -->
                 <div class="tools-wrapper">
                     <!-- ORGANIZE PDF -->
-                    <section class="tool-category">
+                    <section class="tool-category" id="cat-organize" data-category="organize">
                         <h2 class="category-title">📋 Organize PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('merge')">
@@ -170,7 +229,7 @@
                     </section>
 
                     <!-- OPTIMIZE PDF -->
-                    <section class="tool-category">
+                    <section class="tool-category" id="cat-optimize" data-category="optimize">
                         <h2 class="category-title">⚡ Optimize PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('compress')">
@@ -182,7 +241,7 @@
                     </section>
 
                     <!-- CONVERT TO PDF -->
-                    <section class="tool-category">
+                    <section class="tool-category" id="cat-to-pdf" data-category="to-pdf">
                         <h2 class="category-title">🔄 Convert to PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('image')">
@@ -209,7 +268,7 @@
                     </section>
 
                     <!-- CONVERT FROM PDF -->
-                    <section class="tool-category">
+                    <section class="tool-category" id="cat-from-pdf" data-category="from-pdf">
                         <h2 class="category-title">📤 Convert from PDF</h2>
                         <div class="tool-cards">
                             <div class="tool-card" onclick="showTool('pdf-to-word')">
@@ -376,6 +435,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="app.js?v=2.1"></script>
+    <script src="app.js?v=2.2"></script>
 </body>
 </html>

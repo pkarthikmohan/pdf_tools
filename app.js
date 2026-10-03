@@ -1,14 +1,15 @@
 // ===========================
-// VIEW NAVIGATION
+// VIEW NAVIGATION & MOBILE
 // ===========================
 
 function showView(viewName) {
     const views = document.querySelectorAll('.view-container');
     views.forEach(view => view.classList.remove('active'));
     
-    document.getElementById(viewName + '-view').classList.add('active');
+    const target = document.getElementById(viewName + '-view');
+    if (target) target.classList.add('active');
     
-    // Update navbar
+    // Update navbar desktop & mobile
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
         if (link.textContent.toLowerCase().includes(viewName) || 
@@ -16,11 +17,68 @@ function showView(viewName) {
             link.classList.add('active');
         }
     });
+
+    closeMobileMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showTool(toolName) {
     showView('tool');
     renderToolWorkspace(toolName);
+    closeMobileMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('mobile-menu-btn');
+    if (!menu || !btn) return;
+    
+    const isOpen = menu.classList.contains('active');
+    if (isOpen) {
+        closeMobileMenu();
+    } else {
+        menu.classList.add('active');
+        btn.classList.add('active');
+    }
+}
+
+function closeMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.getElementById('mobile-menu-btn');
+    if (menu) menu.classList.remove('active');
+    if (btn) btn.classList.remove('active');
+}
+
+function mobileNavigateHome() {
+    showView('home');
+}
+
+function mobileNavigateTool(toolName) {
+    showTool(toolName);
+}
+
+function filterCategory(category, buttonEl) {
+    document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+    if (buttonEl) buttonEl.classList.add('active');
+    
+    const categories = document.querySelectorAll('.tool-category');
+    if (category === 'all') {
+        categories.forEach(cat => cat.style.display = 'block');
+    } else {
+        categories.forEach(cat => {
+            const catType = cat.getAttribute('data-category');
+            if (catType === category) {
+                cat.style.display = 'block';
+            } else {
+                cat.style.display = 'none';
+            }
+        });
+        const targetSection = document.getElementById(`cat-${category}`);
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
 }
 
 // ===========================
