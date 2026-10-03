@@ -27,7 +27,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
     background: var(--bg-light);
     color: var(--text-dark);
     line-height: 1.6;
@@ -44,7 +44,9 @@ body {
    NAVIGATION BAR
    =========================== */
 .navbar {
-    background: var(--bg-white);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 0;
     position: sticky;
@@ -54,9 +56,10 @@ body {
 }
 
 .nav-content {
-    max-width: 1400px;
+    max-width: 1440px;
+    width: 100%;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -114,31 +117,12 @@ body {
    =========================== */
 .main-container {
     flex: 1;
-    max-width: 1400px;
+    max-width: 1440px;
     width: 100%;
     margin: 0 auto;
-    padding: 2rem;
-    box-sizing: border-box; /* Ensures padding does not break full-width scaling */
+    padding: 2.5rem 1.5rem;
+    box-sizing: border-box;
 }
-.tool-cards {
-    display: grid;
-    /* Changed auto-fill to auto-fit to force columns to scale horizontally and fit the screen width */
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    width: 100%; /* Ensures the grid extends completely across its parent */
-}
-.tools-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-    width: 100%;
-}
-
-.tool-category {
-    animation: fadeIn 0.5s ease-in;
-    width: 100%;
-}
-
 
 .view-container {
     display: none;
@@ -153,23 +137,25 @@ body {
    =========================== */
 .hero-section {
     text-align: center;
-    padding: 3rem 2rem;
-    margin-bottom: 2rem;
+    padding: 2.5rem 1rem 3.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .hero-section h1 {
-    font-size: 2.5rem;
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
     font-weight: 800;
     color: var(--text-dark);
     margin-bottom: 1rem;
-    line-height: 1.2;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
 }
 
 .hero-section p {
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
     color: var(--text-gray);
-    max-width: 600px;
+    max-width: 620px;
     margin: 0 auto;
+    line-height: 1.6;
 }
 
 /* ===========================
@@ -179,16 +165,18 @@ body {
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    width: 100%;
 }
 
 .tool-category {
-    animation: fadeIn 0.5s ease-in;
+    animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 100%;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(16px);
     }
     to {
         opacity: 1;
@@ -197,17 +185,21 @@ body {
 }
 
 .category-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-dark);
-    margin-bottom: 1.5rem;
-    padding-left: 0.5rem;
+    margin-bottom: 1.25rem;
+    padding-left: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .tool-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1.5rem;
+    width: 100%;
 }
 
 .tool-card {
@@ -667,10 +659,19 @@ body {
     }
     
     .tool-cards {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
     
     .main-container {
-        padding: 1rem;
+        padding: 1.25rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tool-cards {
+        grid-template-columns: 1fr;
+    }
+    .hero-section {
+        padding: 1.5rem 0.5rem 2rem;
     }
 }
